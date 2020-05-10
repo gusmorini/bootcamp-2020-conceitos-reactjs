@@ -1,29 +1,16 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap");
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Roboto", sans-serif;
 }
 
 body {
   font-size: 14px;
-  height: 100vh;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  margin: 2rem;
-  background: white;
 }
 
-div.container {
-  background: #e1e1e1;
-  border-radius: 6px;
-  border: 3px solid #7159c1;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
+div {
+  width: 100%;
+  margin: 20px;
 }
 
 div li {
@@ -44,52 +31,9 @@ button {
   margin-top: 15px;
   font-weight: bold;
   font-size: 14px;
-  transition: opacity 500ms;
-}
-
-button:disabled {
-  opacity: 0.3;
 }
 
 div li button {
-  margin: 0;
+  margin: 0 15px;
   background: #ca4949;
-}
-
-span.repository-title {
-  font-size: 1.3rem;
-  font-weight: bold;
-}
-
-div.repository-create form {
-  display: flex;
-  flex-direction: column;
-}
-
-div.repository-create label {
-  font-weight: bold;
-  margin-bottom: 0.2rem;
-  text-transform: uppercase;
-}
-
-div.repository-create input,
-textarea {
-  border-radius: 4px;
-  border: 1px solid #e1e1e1;
-  padding: 1rem;
-  margin-bottom: 1rem;
-}
-
-ul.list {
-  margin-top: 2rem;
-  min-width: 400px;
-}
-
-ul.list li {
-  display: flex;
-  justify-content: space-between;
-}
-
-ul.list h1 {
-  margin-bottom: 1rem;
 }

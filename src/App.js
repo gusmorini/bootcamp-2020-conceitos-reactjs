@@ -5,92 +5,58 @@ import "./styles.css";
 
 function App() {
   /** state */
-  const [repositories, setRepositories] = useState([]);
-  const [data, setData] = useState([]);
+  const [list, setList] = useState([]);
 
-  /** variavel que controle se o item pode ser criado */
-  const isValid = !!data.title && !!data.url && !!data.techs;
-
+  /** ações ao carregar a página */
   useEffect(() => {
-    api.get("/repositories").then((response) => setRepositories(response.data));
+    getListApi();
   }, []);
 
+  /** busca os dados na api */
+  async function getListApi() {
+    const response = await api.get("/repositories");
+    if (response.data) {
+      setList(response.data);
+    }
+  }
+
+  // cria repositório na api e no state
   async function handleAddRepository() {
-    const response = await api.post("/repositories", data);
-    if (response.status === 200) {
-      setRepositories([...repositories, response.data]);
-      setData([]);
+    const dados = {
+      url: "https://github.com/josepholiveira",
+      title: "Desafio ReactJS",
+      techs: ["React", "Node.js"],
+    };
+
+    const response = await api.post("repositories", dados);
+    if (response.data) {
+      setList([response.data, ...list]);
     }
   }
 
+  // remove repositório na api e no state
   async function handleRemoveRepository(id) {
-    /** envia para api o pedido de delete */
     const response = await api.delete(`/repositories/${id}`);
-
-    /** se o status for correspondente remove o item do array do state */
     if (response.status === 204) {
-      setRepositories(
-        repositories.filter((repository) => repository.id !== id)
-      );
+      setList(list.filter((item) => item.id !== id));
     }
-  }
-
-  function handleData(event) {
-    /** desestrutura a variavel event */
-    const { name, value } = event.target;
-    /** atribui os valores ao array do state */
-    setData({ ...data, [name]: value });
   }
 
   return (
-    <div className="container">
-      <div className="repository-create">
-        <form action="#" autoComplete="off">
-          <label htmlFor="">título</label>
-          <input
-            type="text"
-            name="title"
-            value={data.title || ""}
-            onChange={handleData}
-          />
-
-          <label htmlFor="">url</label>
-          <input
-            type="text"
-            name="url"
-            value={data.url || ""}
-            onChange={handleData}
-          />
-
-          <label htmlFor="">techs</label>
-          <input
-            type="text"
-            name="techs"
-            value={data.techs || ""}
-            onChange={handleData}
-          />
-        </form>
-
-        <button disabled={!isValid} onClick={handleAddRepository}>
-          Adicionar
-        </button>
-      </div>
-
-      <ul data-testid="repository-list" className="list">
-        <h1>Lista repositórios</h1>
-        {repositories.length > 0 ? (
-          repositories.map((repository) => (
-            <li key={repository.id}>
-              <span>{repository.title}</span>
-              <button onClick={() => handleRemoveRepository(repository.id)}>
+    <div>
+      <ul data-testid="repository-list">
+        {list.length > 0 &&
+          list.map((item) => (
+            <li key={item.id}>
+              {item.title}
+              <button onClick={() => handleRemoveRepository(item.id)}>
                 Remover
               </button>
             </li>
-          ))
-        ) : (
-          <li>nenhum repositório encontrado</li>
-        )}
+          ))}
       </ul>
+
+      <button onClick={handleAddRepository}>Adicionar</button>
     </div>
   );
 }
